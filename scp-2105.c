@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 
-#define PROGRAM_VERSION "0"
+#define PROGRAM_VERSION "0.1"
 #define DEBUG
 
 void usage()
@@ -35,7 +35,7 @@ void interagirObtentionType(char* type)
 	printf("\n\r\nType de rituel : ");
 	do
 	{
-		scanf("%c%*c", &c);
+		if (scanf("%c%*c", &c) == 0) printf("Une erreur est survenue\n");
 		if (c >= '1' && c <= '6') break;
 	}while(true);
 
@@ -49,7 +49,7 @@ void interagirObtentionLetalite(bool* letal)
 	printf("Letalité  (o/n) : ");
 	do
 	{
-		scanf("%c%*c",&c);
+		if (scanf("%c%*c",&c) == 0) printf("Une erreur est survenue\n");
 		if (c == 'o' || c == 'n') break;
 	}while (true); // LOL the while repeated even if c is 'o' or 'n'
 
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 	char* argp;
 	bool letal = false;
 	char type = '0'; // indéfini
-	bool flagPassLetal;
+	bool flagPassLetal = false;
 
 	// parse arguments
 	for (int argn=1 ; argn < argc && (argp = argv[argn])[0] == '-'; ++argn)
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 		if (strcmp(argp,"-v") == 0 || strcmp(argp,"--version") == 0)
 		{
 			puts(PROGRAM_VERSION);
-			continue;
+			return 0;
 		}
 		// letalité
 		if (strcmp(argp,"-l") == 0)

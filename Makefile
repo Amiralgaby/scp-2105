@@ -7,5 +7,5 @@ all: tests main
 tests:
 	$(CC) $(CCFLAGS) test_unitaire_rituel.c rituel.c -o test_rituel
 
-main:
-	$(CC) $(CCFLAGS) scp-2105.c rituel.c -o main
+main: scp-2105.c rituel.c
+	$(CC) $(CCFLAGS) $^ -o main
