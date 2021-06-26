@@ -6,6 +6,10 @@
 
 #define NB_NAMES 3
 
+/* private function prototype */
+void createNomDeRituel(char** name);
+
+/* public function */
 void createRituel(Rituel* r, bool letal, char type)
 {
 	createNomDeRituel(&r->name);
@@ -19,8 +23,6 @@ void freeRituel(Rituel* r)
 }
 
 /* private function */
-
-
 void createNomDeRituel(char** name)
 {
 	const char* tabNames[NB_NAMES] = {

@@ -17,9 +17,7 @@ typedef struct rituel
 }Rituel;
 
 /* public functions */
-void nouvRituel(Rituel* r);
-void freeRituel(Rituel* r);
 void createRituel(Rituel* r, bool letal, char type);
-void createNomDeRituel(char** name);
+void freeRituel(Rituel* r);
 
 #endif /* RITUEL */

@@ -6,6 +6,8 @@
 #define PROGRAM_VERSION "0.1"
 #define DEBUG
 
+void afficherRituels();
+
 void usage()
 {
 	puts("Usage : COMMAND.COM [OPTIONS]");
@@ -14,6 +16,9 @@ void usage()
 	puts("\t-v, --version\t\tAfficher la version");
 	puts("\t-l <bool>\t\tMettre \"false\", par défaut \"true\"");
 	puts("\t-t <1 à 6>\t\tType de rituel");
+
+	puts("Types de rituel : ");
+	afficherRituels();
 }
 
 void afficherRituels()
