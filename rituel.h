@@ -3,11 +3,7 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
-
-typedef struct maillon{
-	char* phrase;
-	struct maillon* suiv;
-}Maillon, *List;
+#include "struct.h"
 
 typedef struct rituel
 {

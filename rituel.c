@@ -6,16 +6,17 @@
 
 #define NB_NAMES 3
 #define NB_OBJ_IMP 9
+#define NB_OBJ 13
 
 /* private function prototype */
 void createNomDeRituel(char** name);
-void createObjetValeurImportant(List l);
+List createObjetValeurImportant(List l);
 
 /* public function */
 void createRituel(Rituel* r, bool letal, char type)
 {
 	srand( time( NULL ) );
-	r->objets = malloc(sizeof(Maillon));
+	r->objets = listNouv();
 	createNomDeRituel(&r->name);
 	createObjetValeurImportant(r->objets);
 }
@@ -26,8 +27,7 @@ void freeRituel(Rituel* r)
 		free(r->name);
 	if(r->objets != NULL)
 	{
-		free(r->objets->phrase);
-		free(r->objets);
+		supprimerListe(r->objets);
 	}
 	r->name = NULL;
 	r->objets = NULL;
@@ -37,7 +37,7 @@ void freeRituel(Rituel* r)
 /* private function */
 void createNomDeRituel(char** name)
 {
-	const char* tabNames[NB_NAMES] = {
+	static const char* tabNames[NB_NAMES] = {
 		"Ira constans purus",
 		"Fragmentis colligeris",
 		"autre"
@@ -52,9 +52,9 @@ void createNomDeRituel(char** name)
 	strcpy(*name,choosen); // possible overflow xD
 }
 
-void createObjetValeurImportant(List l)
+List createObjetValeurImportant(List l)
 {
-	char* tabObjetImp[NB_OBJ_IMP] = {
+	static const char* tabObjetImp[NB_OBJ_IMP] = {
 		"Ordinateur",
 		"rubick's cube",
 		"téléphone",
@@ -66,11 +66,35 @@ void createObjetValeurImportant(List l)
 		"lit"
 	};
 	const char* choosen = tabObjetImp[ rand()%NB_OBJ_IMP ];
-	l->phrase = malloc(strlen(choosen)+1);
-	if (l->phrase == NULL)
+	char* val = malloc(strlen(choosen)+1);
+	if (val == NULL)
 	{
 		printf("malloc() error\n");
 		exit(-1);
 	}
-	strcpy(l->phrase,choosen);
+	strcpy(val,choosen);
+	return insertion(l,val);
+}
+
+void createObjets(List l)
+{
+	static const char* tabObjet[NB_OBJ] = {
+		"un stylo bleu",
+		"un stylo vert",
+		"un stylo rouge",
+		"une trousse",
+		"une paire de chaussettes en boule",
+		"une lampe",
+		"un manteau",
+		"une pile",
+		"un classeur",
+		"une paire de crocs",
+		"une serviette de bain",
+		"un peignoir",
+		"un cartable"
+	};
+	for (int i = 1; i <= (rand()&1) + 5; ++i)
+	{
+		// code
+	}
 }
