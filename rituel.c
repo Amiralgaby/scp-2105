@@ -18,7 +18,7 @@ void createRituel(Rituel* r, bool letal, char type)
 	srand( time( NULL ) );
 	r->objets = listNouv();
 	createNomDeRituel(&r->name);
-	createObjetValeurImportant(r->objets);
+	r->objets = createObjetValeurImportant(r->objets);
 }
 
 void freeRituel(Rituel* r)

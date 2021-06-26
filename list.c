@@ -4,7 +4,11 @@
 List de string
 */
 
-char* tete(List l){ return l->phrase; }
+char* tete(List l){
+	if (vide(l))
+		return NULL;
+	return l->phrase; 
+}
 
 int vide(List l){ return l == NULL; }
 
@@ -70,11 +74,11 @@ int existe(List l, char* v)
 void supprimerListe(List l)
 {
 	Maillon *m;
-	char* alloue;
+	
 	while (!vide(l))
 	{
 		m = l;
-		alloue = m->phrase;
+		char* alloue = m->phrase;
 		l = l->suiv;
 		free(alloue);
 		free(m);

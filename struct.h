@@ -19,6 +19,7 @@ List insererEnTete(List l, char* a);
 List supprimerEnTete(List l);
 List insertion(List l, char* v);
 int vide(List l);
+char* tete(List l);
 void afficherList(List l);
 List supprimerEnTete(List l);
 

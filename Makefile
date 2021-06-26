@@ -4,11 +4,16 @@ CCFLAGS=-Wall -O3
 
 all: tests main
 
-tests: test_unitaire_rituel.c rituel.c list.c
-	$(CC) $(CCFLAGS) $^ -o test_rituel
+tests: rituel list
 
 main: scp-2105.c rituel.c list.c
 	$(CC) $(CCFLAGS) $^ -o main
 
+rituel: test_unitaire_rituel.c rituel.c list.c
+	$(CC) $(CCFLAGS) $^ -o rituel
+
+list: list.c test_unitaire_list.c
+	$(CC) $(CCFLAGS) $^ -o list
+
 clean:
-	rm -rf test_rituel main
+	rm -rf rituel main list *.o
