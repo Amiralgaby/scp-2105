@@ -94,7 +94,8 @@ int main(int argc, char *argv[])
 				letal = false;
 			else
 				letal = true;
-			++argn;
+			if (argv[argn+1][0] != '-')
+				++argn;
 			continue;
 		}
 		// type de rituel
