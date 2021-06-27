@@ -12,6 +12,7 @@ int main(int argc, char const *argv[])
 	l = insertion(l,b);
 	l = insertion(l,c);
 	afficherList(l);
+	printf("il y a \"%s\" à l'index 2\n", atIndexList(l,2));
 	supprimerListe(l);
 	return 0;
 }

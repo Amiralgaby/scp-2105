@@ -12,15 +12,19 @@
 void createNomDeRituel(char** name);
 List createObjetValeurImportant(List l);
 List createObjets(List l);
+List createInstructions(List l);
 
 /* public function */
 void createRituel(Rituel* r, bool letal, char type)
 {
 	srand( time( NULL ) );
 	r->objets = listNouv();
+	r->instructions = listNouv();
+
 	createNomDeRituel(&r->name);
 	r->objets = createObjetValeurImportant(r->objets);
 	r->objets = createObjets(r->objets);
+	r->instructions = createInstructions(r->objets);
 }
 
 void freeRituel(Rituel* r)
@@ -125,4 +129,59 @@ List createObjets(List l)
 	}
 	free(val);
 	return l;
+}
+
+enum{SUR,SOUS,A_COTE,PLACE_SUR,PLACE_A_L_ENVERS}ACTE;
+
+char* transformerText(char* text)
+{
+	if (text == NULL) return "(error)";
+	char* truc;
+	if (strncasecmp(text,"un",1) == 0){
+		truc = malloc(strlen("le ")+strlen(text)+1);
+		strcpy(truc,"le ");
+		strcat(truc,text+3);
+		return truc;
+	}
+	if (strncasecmp(text,"une",2) == 0){
+		truc = malloc(strlen("la ")+strlen(text)+1);
+		strcpy(truc,"le ");
+		strcat(truc,text+4);
+		return truc;
+	}
+	return text;
+}
+
+char* randomiseObjetOrContext(List objets, List context,const int objetsLong, const int contextLong)
+{
+	int r = rand()%(objetsLong+contextLong);
+
+	if (r <= objetsLong)
+		return atIndexList(objets,r);
+	else
+		return atIndexList(context,r-objetsLong);
+}
+
+List createInstructions(List l)
+{
+	List context, instructions = listNouv();
+	
+	context = listNouv();
+	context = insertion(context,"un sol");
+	context = insertion(context,"un coin de la salle");
+	context = insertion(context,"un bureau");
+
+	int l1 = longueur(l), l2 = longueur(context);
+	printf("l1 : %d l2 : %d\n", l1, l2);
+	do
+	{
+		char* objetUn = randomiseObjetOrContext(l,context,l1,l2);
+		char* objetDeux = randomiseObjetOrContext(l,context,l1,l2);
+		printf("objetUn : %s\nobjetDeux : %s\n", objetUn, objetDeux);
+		char* possessifObjetUn = transformerText(objetUn);
+		char* possessifObjetDeux = transformerText(objetDeux);
+		printf("mettre %s sur %s\n", possessifObjetUn, possessifObjetDeux);
+	}while(0);
+
+	return instructions;
 }

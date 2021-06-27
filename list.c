@@ -95,3 +95,16 @@ int longueur(List l)
 	}
 	return compt;
 }
+
+char* atIndexList(List l,const int index)
+{
+	Maillon* m;
+	m = l;
+	for (int i = 1; i < index; ++i)
+	{
+		if (vide(l))
+			break;
+		m = l->suiv;
+	}
+	return tete(m);
+}
