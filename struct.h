@@ -15,12 +15,13 @@ typedef struct maillon
 
 List listNouv(void);
 void supprimerListe(List l);
-List insererEnTete(List l, char* a);
-List supprimerEnTete(List l);
+// List insererEnTete(List l, char* a);
 List insertion(List l, char* v);
 int vide(List l);
 char* tete(List l);
 void afficherList(List l);
-List supprimerEnTete(List l);
+// List supprimerEnTete(List l);
+int longueur(List l);
+int existe(List l,char* string);
 
 #endif /* LIST */

@@ -35,7 +35,7 @@ List insertion(List l, char* x)
 	l->suiv = insertion(l->suiv,x);
 	return l;
 }
-
+/*
 List supprimerEnTete(List p)
 {
 	Maillon *m;
@@ -49,6 +49,7 @@ List supprimerEnTete(List p)
 	free(m);
 	return p;
 }
+*/
 
 void afficherList(List p)
 {
@@ -57,7 +58,6 @@ void afficherList(List p)
 		printf("%s\n", p->phrase);
 		p = p->suiv;
 	}
-	printf("\n");
 }
 
 int existe(List l, char* v)
@@ -83,4 +83,15 @@ void supprimerListe(List l)
 		free(alloue);
 		free(m);
 	}
+}
+
+int longueur(List l)
+{
+	int compt = 0;
+	while(!vide(l))
+	{
+		++compt;
+		l = l->suiv;
+	}
+	return compt;
 }
