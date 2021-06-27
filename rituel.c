@@ -131,21 +131,37 @@ List createObjets(List l)
 	return l;
 }
 
-enum{SUR,SOUS,A_COTE,PLACE_SUR,PLACE_A_L_ENVERS}ACTE;
+int isMasculin(char* text)
+{
+	if (text == NULL) return -1;
+	if (*text == 'u')
+	{
+		++text;
+		if (*text == 'n')
+		{
+			++text;
+			if (*text == 'e')
+			{
+				return 0; // false, c'est féminin
+			}
+		}
+	}
+	return 1;
+}
 
 char* transformerText(char* text)
 {
 	if (text == NULL) return "(error)";
 	char* truc;
-	if (strncasecmp(text,"un",1) == 0){
+	if (isMasculin(text)){
 		truc = malloc(strlen("le ")+strlen(text)+1);
 		strcpy(truc,"le ");
 		strcat(truc,text+3);
 		return truc;
 	}
-	if (strncasecmp(text,"une",2) == 0){
+	else {
 		truc = malloc(strlen("la ")+strlen(text)+1);
-		strcpy(truc,"le ");
+		strcpy(truc,"la ");
 		strcat(truc,text+4);
 		return truc;
 	}
@@ -162,6 +178,8 @@ char* randomiseObjetOrContext(List objets, List context,const int objetsLong, co
 		return atIndexList(context,r-objetsLong);
 }
 
+enum{SUR,SOUS,A_COTE,PLACE_SUR,PLACE_A_L_ENVERS}ACTION;
+
 List createInstructions(List l)
 {
 	List context, instructions = listNouv();
@@ -172,15 +190,19 @@ List createInstructions(List l)
 	context = insertion(context,"un bureau");
 
 	int l1 = longueur(l), l2 = longueur(context);
-	printf("l1 : %d l2 : %d\n", l1, l2);
+
 	do
 	{
 		char* objetUn = randomiseObjetOrContext(l,context,l1,l2);
 		char* objetDeux = randomiseObjetOrContext(l,context,l1,l2);
-		printf("objetUn : %s\nobjetDeux : %s\n", objetUn, objetDeux);
+
 		char* possessifObjetUn = transformerText(objetUn);
 		char* possessifObjetDeux = transformerText(objetDeux);
+
 		printf("mettre %s sur %s\n", possessifObjetUn, possessifObjetDeux);
+
+		free(possessifObjetUn);
+		free(possessifObjetDeux);
 	}while(0);
 
 	return instructions;
