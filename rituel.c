@@ -158,14 +158,19 @@ char* indefiniVersDefiniArticle(char* text)
 	}
 }
 
-char* randomiseObjetOrContext(List objets, List context,const int objetsLong, const int contextLong)
+char* randomiseObjetOrContext(List objets, List context,const int objetsLong, const int contextLong, char* objFirst)
 {
 	int r = rand()%(objetsLong+contextLong);
-
-	if (r <= objetsLong)
-		return atIndexList(objets,r);
-	else
-		return atIndexList(context,r-objetsLong);
+	char* choosen;
+	if (r <= objetsLong){
+		choosen = atIndexList(objets,r);
+	}
+	else{
+		choosen = atIndexList(context,r-objetsLong);
+	}
+	// techniquement, si les listes sont petites (0,1) c'est une boucle infinie :(
+	if (strcmp(choosen,objFirst) == 0) return randomiseObjetOrContext(objets,context,objetsLong,contextLong,objFirst);
+	return choosen;
 }
 
 enum{SUR,SOUS,A_COTE,PLACE_SUR,PLACE_SOUS,PLACE_A_L_ENVERS}ACTION;
@@ -204,7 +209,6 @@ char* createAndPrintInstruction(char* obj1, char* obj2)
 		default:
 			strcpy(buffer,"switch(action): error");
 	}
-	printf("Intérieur du buffer : %s\n", buffer);
 	return buffer;
 }
 
@@ -230,15 +234,16 @@ List createInstructions(List l)
 
 	context = listNouv();
 	context = insertion(context,mallocAndCpy("un sol"));
-	context = insertion(context,mallocAndCpy("un coin de la salle"));
+	context = insertion(context,mallocAndCpy("une étagère"));
 	context = insertion(context,mallocAndCpy("un bureau"));
+	context = insertion(context,mallocAndCpy("une poubelle"));
 
 	int l1 = longueur(l), l2 = longueur(context);
 
-	do
+	for (int x = 0, r = (rand()&3)+4; x < r; ++x)
 	{
-		char* objetUn = randomiseObjetOrContext(l,context,l1,l2);
-		char* objetDeux = randomiseObjetOrContext(l,context,l1,l2);
+		char* objetUn = randomiseObjetOrContext(l,context,l1,l2,"");
+		char* objetDeux = randomiseObjetOrContext(l,context,l1,l2,objetUn);
 
 		char* definiObjetUn = indefiniVersDefiniArticle(objetUn);
 		if (definiObjetUn == NULL)
@@ -259,7 +264,7 @@ List createInstructions(List l)
 
 		free(definiObjetUn);
 		free(definiObjetDeux);
-	}while(0);
+	}
 
 	supprimerListe(context);
 	return instructions;
