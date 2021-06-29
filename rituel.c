@@ -35,9 +35,12 @@ void freeRituel(Rituel* r)
 	{
 		supprimerListe(r->objets);
 	}
+	if (r->instructions != NULL)
+	{
+		supprimerListe(r->instructions);
+	}
 	r->name = NULL;
 	r->objets = NULL;
-	printf("Freed\n");
 }
 
 /* private function */
@@ -103,7 +106,7 @@ List createObjets(List l)
 		"un cadre de photo",
 		"une chaise"
 	};
-	char* choosen;
+	
 	char** val = malloc(sizeof(char*));
 	if (val == NULL)
 	{
@@ -112,7 +115,7 @@ List createObjets(List l)
 	}
 	for (int r = (rand()&1) + 4, i = 1; i <= r; ++i)
 	{
-		choosen = tabObjet[ rand()%NB_OBJ ];
+		char* choosen = tabObjet[ rand()%NB_OBJ ];
 		if (existe(l,choosen))
 		{
 			--i;
@@ -133,39 +136,26 @@ List createObjets(List l)
 
 int isMasculin(char* text)
 {
-	if (text == NULL) return -1;
 	if (*text == 'u')
-	{
-		++text;
-		if (*text == 'n')
-		{
-			++text;
-			if (*text == 'e')
-			{
+		if (*++text == 'n')
+			if (*++text == 'e')
 				return 0; // false, c'est féminin
-			}
-		}
-	}
 	return 1;
 }
 
-char* transformerText(char* text)
+char* indefiniVersDefiniArticle(char* text)
 {
-	if (text == NULL) return "(error)";
-	char* truc;
+	char* truc = malloc(strlen(text)+4);
 	if (isMasculin(text)){
-		truc = malloc(strlen("le ")+strlen(text)+1);
 		strcpy(truc,"le ");
 		strcat(truc,text+3);
 		return truc;
 	}
 	else {
-		truc = malloc(strlen("la ")+strlen(text)+1);
 		strcpy(truc,"la ");
 		strcat(truc,text+4);
 		return truc;
 	}
-	return text;
 }
 
 char* randomiseObjetOrContext(List objets, List context,const int objetsLong, const int contextLong)
@@ -178,16 +168,70 @@ char* randomiseObjetOrContext(List objets, List context,const int objetsLong, co
 		return atIndexList(context,r-objetsLong);
 }
 
-enum{SUR,SOUS,A_COTE,PLACE_SUR,PLACE_A_L_ENVERS}ACTION;
+enum{SUR,SOUS,A_COTE,PLACE_SUR,PLACE_SOUS,PLACE_A_L_ENVERS}ACTION;
+
+char* createAndPrintInstruction(char* obj1, char* obj2)
+{
+	// on considère que obj1 et obj2 sont non nuls :)
+	char* buffer = malloc(90+strlen(obj1)+strlen(obj2)); // franchement c'est bien assez pour les phrases que je fais
+
+	if (buffer == NULL)
+	{
+		printf("malloc(): error");
+		exit(-1);
+	}
+
+	// nombre random modulo le nombre d'élément dans l'énumération
+	switch(rand()%(PLACE_A_L_ENVERS-SUR))
+	{
+		case SUR:
+			sprintf(buffer,"mettre %s sur %s", obj1, obj2);
+			break;
+		case SOUS:
+			sprintf(buffer,"mettre %s sous %s", obj1, obj2);
+			break;
+		case A_COTE:
+			sprintf(buffer,"mettre %s à côté de %s", obj1, obj2); // faut changer :( "de la" ou "du"
+			break;
+		case PLACE_SUR:
+			sprintf(buffer,"placer %s sur %s", obj1, obj2);
+			break;
+		case PLACE_SOUS:
+			sprintf(buffer,"placer %s sous %s", obj1, obj2);
+			break;
+		case PLACE_A_L_ENVERS:
+			sprintf(buffer,"placer %s à l'envers", obj1);
+		default:
+			strcpy(buffer,"switch(action): error");
+	}
+	printf("Intérieur du buffer : %s\n", buffer);
+	return buffer;
+}
+
+char* mallocAndCpy(char* str)
+{
+	char* toReturn;
+	if (str == NULL)
+	{
+		toReturn = malloc(30);
+		strcpy(toReturn,"mallocAndCpy(): error\n");
+	}
+	else
+	{
+		toReturn = malloc(strlen(str)+1);
+		strcpy(toReturn,str);
+	}
+	return toReturn;
+}
 
 List createInstructions(List l)
 {
 	List context, instructions = listNouv();
-	
+
 	context = listNouv();
-	context = insertion(context,"un sol");
-	context = insertion(context,"un coin de la salle");
-	context = insertion(context,"un bureau");
+	context = insertion(context,mallocAndCpy("un sol"));
+	context = insertion(context,mallocAndCpy("un coin de la salle"));
+	context = insertion(context,mallocAndCpy("un bureau"));
 
 	int l1 = longueur(l), l2 = longueur(context);
 
@@ -196,14 +240,27 @@ List createInstructions(List l)
 		char* objetUn = randomiseObjetOrContext(l,context,l1,l2);
 		char* objetDeux = randomiseObjetOrContext(l,context,l1,l2);
 
-		char* possessifObjetUn = transformerText(objetUn);
-		char* possessifObjetDeux = transformerText(objetDeux);
+		char* definiObjetUn = indefiniVersDefiniArticle(objetUn);
+		if (definiObjetUn == NULL)
+		{
+			printf("malloc(): error\n");
+			exit(-1);
+		}
+		char* definiObjetDeux = indefiniVersDefiniArticle(objetDeux);
+		if (definiObjetDeux == NULL)
+		{
+			printf("malloc(): error\n");
+			exit(-1);
+		}
 
-		printf("mettre %s sur %s\n", possessifObjetUn, possessifObjetDeux);
 
-		free(possessifObjetUn);
-		free(possessifObjetDeux);
+		char* inst = createAndPrintInstruction(definiObjetUn,definiObjetDeux);
+		instructions = insertion(instructions,inst);
+
+		free(definiObjetUn);
+		free(definiObjetDeux);
 	}while(0);
 
+	supprimerListe(context);
 	return instructions;
 }
