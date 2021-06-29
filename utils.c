@@ -2,6 +2,12 @@
 #include <stdio.h>
 #include <string.h>
 
+inline void errorMalloc(void)
+{
+	printf("malloc(): error\n");
+	exit(-1);
+}
+
 char* mallocAndCpy(char* str)
 {
 	char* toReturn;

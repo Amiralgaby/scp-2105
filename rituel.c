@@ -15,6 +15,12 @@ List createObjetValeurImportant(List l);
 List createObjets(List l);
 List createInstructions(List l);
 
+inline void errorMalloc(void)
+{
+	printf("malloc(): error\n");
+	exit(-1);
+}
+
 /* public function */
 void createRituel(Rituel* r, bool letal, char type)
 {
@@ -53,12 +59,10 @@ void createNomDeRituel(char** name)
 		"Detritus"
 	};
 	const char* choosen = tabNames[ rand()%NB_NAMES ];
+	
 	*name = malloc(strlen(choosen)+1);
 	if (*name == NULL)
-	{
-		printf("malloc() error\n");
-		exit(-1);
-	}
+		errorMalloc();
 	strcpy(*name,choosen);
 }
 
@@ -76,12 +80,11 @@ List createObjetValeurImportant(List l)
 		"un lit"
 	};
 	const char* choosen = tabObjetImp[ rand()%NB_OBJ_IMP ];
+	
 	char* val = malloc(strlen(choosen)+1);
 	if (val == NULL)
-	{
-		printf("malloc() error\n");
-		exit(-1);
-	}
+		errorMalloc();
+
 	strcpy(val,choosen);
 	return insertion(l,val);
 }
@@ -110,10 +113,8 @@ List createObjets(List l)
 	
 	char** val = malloc(sizeof(char*));
 	if (val == NULL)
-	{
-		printf("malloc() error\n");
-		exit(-1);
-	}
+		errorMalloc();
+
 	for (int r = (rand()&1) + 4, i = 1; i <= r; ++i)
 	{
 		char* choosen = tabObjet[ rand()%NB_OBJ ];
@@ -124,10 +125,8 @@ List createObjets(List l)
 		}
 		*val = malloc(strlen(choosen)+1);
 		if (*val == NULL)
-		{
-			printf("malloc() error\n");
-			exit(-1);
-		}
+			errorMalloc();
+
 		strcpy(*val,choosen);
 		l = insertion(l,*val);
 	}
@@ -158,13 +157,10 @@ char* createAndPrintInstruction(char* obj1, char* obj2)
 	char* buffer = malloc(90+strlen(obj1)+strlen(obj2)); // franchement c'est bien assez pour les phrases que je fais
 
 	if (buffer == NULL)
-	{
-		printf("malloc(): error");
-		exit(-1);
-	}
+		errorMalloc();
 
 	// nombre random modulo le nombre d'élément dans l'énumération
-	switch(rand()%(PLACE_A_L_ENVERS-SUR))
+	switch(rand()%(PLACE_A_L_ENVERS+1))
 	{
 		case SUR:
 			sprintf(buffer,"mettre %s sur %s", obj1, obj2);
@@ -183,6 +179,7 @@ char* createAndPrintInstruction(char* obj1, char* obj2)
 			break;
 		case PLACE_A_L_ENVERS:
 			sprintf(buffer,"placer %s à l'envers", obj1);
+			break;
 		default:
 			strcpy(buffer,"switch(action): error");
 	}
@@ -208,17 +205,11 @@ List createInstructions(List l)
 
 		char* definiObjetUn = indefiniVersDefiniArticle(objetUn);
 		if (definiObjetUn == NULL)
-		{
-			printf("malloc(): error\n");
-			exit(-1);
-		}
+			errorMalloc();
+
 		char* definiObjetDeux = indefiniVersDefiniArticle(objetDeux);
 		if (definiObjetDeux == NULL)
-		{
-			printf("malloc(): error\n");
-			exit(-1);
-		}
-
+			errorMalloc();
 
 		char* inst = createAndPrintInstruction(definiObjetUn,definiObjetDeux);
 		instructions = insertion(instructions,inst);
