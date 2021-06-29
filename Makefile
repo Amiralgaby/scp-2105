@@ -6,10 +6,10 @@ all: tests main
 
 tests: rituel list
 
-main: scp-2105.c rituel.c list.c
+main: scp-2105.c rituel.c utils.c list.c
 	$(CC) $(CCFLAGS) $^ -o main
 
-rituel: test_unitaire_rituel.c rituel.c list.c
+rituel: test_unitaire_rituel.c rituel.c utils.c list.c
 	$(CC) $(CCFLAGS) $^ -o rituel
 
 list: list.c test_unitaire_list.c
