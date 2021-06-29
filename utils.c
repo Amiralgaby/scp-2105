@@ -27,17 +27,32 @@ int isMasculin(char* text)
 	return 1;
 }
 
+inline int isVoyelle(char c)
+{
+	if (c == 'e' || c == 'a' || c == 'u' || c == 'i' || c == 'o' || c == 'y')
+		return 1;
+	if (c == -61) // é è ê
+		return 1;
+	return 0;
+}
+
+inline int isDebutParVoyelle(char* text)
+{
+	if ( isVoyelle( *(index(text,' ')+1) ) )
+		return 1;
+	return 0;
+}
+
 char* indefiniVersDefiniArticle(char* text)
 {
 	char* truc = malloc(strlen(text)+4);
 	if (isMasculin(text)){
-		strcpy(truc,"le ");
+		isDebutParVoyelle(text) ? strcpy(truc,"l'") : strcpy(truc,"le ");
 		strcat(truc,text+3);
-		return truc;
 	}
 	else {
-		strcpy(truc,"la ");
+		isDebutParVoyelle(text) ? strcpy(truc,"l'") : strcpy(truc,"la ");
 		strcat(truc,text+4);
-		return truc;
 	}
+	return truc;
 }
