@@ -24,5 +24,6 @@ void afficherList(List l);
 int longueur(List l);
 int existe(List l,char* string);
 char* atIndexList(List l,const int index);
+void afficherElements(List l, void (*pf)(char* val));
 
 #endif /* LIST */

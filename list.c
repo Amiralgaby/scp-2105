@@ -108,3 +108,12 @@ char* atIndexList(List l,const int index)
 	}
 	return tete(m);
 }
+
+void afficherElements(List l, void (*pf)(char* val))
+{
+	while(l != NULL)
+	{
+		(*pf)(l->phrase);
+		l = l->suiv;
+	}
+}

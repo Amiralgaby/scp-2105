@@ -15,6 +15,24 @@ List createObjetValeurImportant(List l);
 List createObjets(List l);
 List createInstructions(List l);
 
+/* Getter and Print Avec Template */
+char* getName(Rituel* r)
+{
+	return (r->name == NULL) ? "(null)" : r->name;
+}
+
+void afficherObjets(Rituel* r,void (*pf)(char* nameObj))
+{
+	afficherElements(r->objets,pf);
+}
+
+void afficherInstructions(Rituel* r, void (*pf)(char* nameInst))
+{
+	afficherElements(r->instructions,pf);
+}
+
+/* Fin des Getters et printers avec template */
+
 inline void errorMalloc(void)
 {
 	printf("malloc(): error\n");

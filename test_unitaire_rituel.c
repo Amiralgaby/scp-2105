@@ -5,20 +5,32 @@
 
 #define NB_NAMES 3
 
+static void printObjet(char* nameObj)
+{
+	static int cmp = 0;
+	printf("%d. %s\n", ++cmp, nameObj);
+}
+
+static void printInstruction(char* nameInst)
+{
+	static int cmp = 0;
+	printf("%d. %s\n", ++cmp, nameInst);
+}
+
 int main(int argc, char const *argv[])
 {
 	Rituel rituel;
 
 	createRituel(&rituel,1,1);
-	(rituel.name == NULL) ? printf("error name == NULL\n") : printf("%s\n", rituel.name);
-	// (tete(rituel.objets) == NULL ) ? printf("error phrase == NULL\n") : printf("tete de liste %s\n", tete(rituel.objets));
 
-	printf("Afficher list objets :\n");
-	afficherList(rituel.objets);
-	printf("Fin Afficher list objets. \n\n");
+	printf("Nom du rituel : %s\n\n",getName(&rituel));
+
+	printf("Afficher list objet 2 :\n");
+	afficherObjets(&rituel,printObjet);
+	printf("Fin Afficher list objet 2\n\n");
 
 	printf("Afficher list instructions :\n");
-	afficherList(rituel.instructions);
+	afficherInstructions(&rituel,printInstruction);
 	printf("Fin Afficher list instructions.\n\n");
 
 	puts("Free structure...\n");

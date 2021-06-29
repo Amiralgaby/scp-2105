@@ -16,4 +16,8 @@ typedef struct rituel
 void createRituel(Rituel* r, bool letal, char type);
 void freeRituel(Rituel* r);
 
+char* getName(Rituel* r);
+void afficherObjets(Rituel* r,void (*pf)(char* nameObj));
+void afficherInstructions(Rituel* r, void (*pf)(char* nameInst));
+
 #endif /* RITUEL */
