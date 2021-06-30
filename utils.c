@@ -88,3 +88,41 @@ char* indefiniVersDefiniArticle(char* text)
 	}
 	return truc;
 }
+
+inline int whatType(char* text)
+{
+	if (*text == 'l')
+	{
+		if (*++text == 'e')
+		{
+			if (*++text == 's')
+				return 0; // pluriel
+			else
+				return 1; // masculin singulier
+		}
+		else if (*(text+1) == 'a')
+			return 2; // féminin singulier
+	}
+	return -1;
+}
+
+void contractAndAddArticle(char** buffer, char* obj)
+{
+	// de le -> du
+	// de la -> de la
+	// de les -> des
+	// de l' -> de l'
+	int ret = whatType(obj);
+	if (ret == -1 || ret == 2){
+		strcat(*buffer,"de ");
+		strcat(*buffer,obj);
+	}
+	if (ret == 0){
+		strcat(*buffer,"des ");
+		strcat(*buffer,obj+4);
+	}
+	if (ret == 1){
+		strcat(*buffer,"du ");
+		strcat(*buffer,obj+3);
+	}	
+}

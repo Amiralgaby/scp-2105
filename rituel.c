@@ -96,7 +96,7 @@ List createObjetValeurImportant(List l)
 		"un stylo vert",
 		"un produit commercial pour adolescent",
 		"un lit",
-		"La première prémolaire du Sujet"
+		"la première prémolaire du Sujet"
 	};
 	const char* choosen = tabObjetImp[ rand()%NB_OBJ_IMP ];
 	
@@ -168,13 +168,15 @@ char* randomiseObjetOrContext(List objets, List context,const int objetsLong, co
 		choosen = atIndexList(context,r-objetsLong);
 	}
 	// techniquement, si les listes sont petites (0,1) c'est une boucle infinie :(
+#if (NB_OBJ>2)
 	if (strcmp(choosen,objFirst) == 0) return randomiseObjetOrContext(objets,context,objetsLong,contextLong,objFirst);
+#endif
 	return choosen;
 }
 
-enum{SUR,SOUS,A_COTE,PLACE_SUR,PLACE_SOUS,PLACE_A_L_ENVERS}ACTION;
+enum{SUR,SOUS,A_COTE,PLACE_SUR,PLACE_SOUS,PLACE_A_L_ENVERS}Action;
 
-char* createAndPrintInstruction(char* obj1, char* obj2)
+char* createInstruction(char* obj1, char* obj2)
 {
 	// on considère que obj1 et obj2 sont non nuls :)
 	char* buffer = malloc(90+strlen(obj1)+strlen(obj2)); // franchement c'est bien assez pour les phrases que je fais
@@ -192,7 +194,8 @@ char* createAndPrintInstruction(char* obj1, char* obj2)
 			sprintf(buffer,"mettre %s sous %s", obj1, obj2);
 			break;
 		case A_COTE:
-			sprintf(buffer,"mettre %s à côté de %s", obj1, obj2); // faut changer :( "de la" ou "du"
+			sprintf(buffer,"mettre %s à côté ", obj1); // faut changer :( "de la" ou "du"
+			contractAndAddArticle(&buffer,obj2);
 			break;
 		case PLACE_SUR:
 			sprintf(buffer,"placer %s sur %s", obj1, obj2);
@@ -234,7 +237,7 @@ List createInstructions(List l)
 		if (definiObjetDeux == NULL)
 			errorMalloc();
 
-		char* inst = createAndPrintInstruction(definiObjetUn,definiObjetDeux);
+		char* inst = createInstruction(definiObjetUn,definiObjetDeux);
 		instructions = insertion(instructions,inst);
 
 		free(definiObjetUn);
