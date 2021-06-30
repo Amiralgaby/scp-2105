@@ -1,6 +1,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "utils.h"
+
+inline const char* indexA(const char* str, char c)
+{
+	unsigned int index = 0;
+	while(*(str+index) != '\0')
+	{
+		if (*(str+index) == c)
+			return str+index;
+		++index;
+	}
+	return "";
+}
 
 inline void errorMalloc(void)
 {
@@ -57,7 +70,7 @@ inline int isVoyelle(char c)
 
 inline int isDebutParVoyelle(char* text)
 {
-	if ( isVoyelle( *(index(text,' ')+1) ) )
+	if ( isVoyelle( *(indexA(text,' ')+1) ) )
 		return 1;
 	return 0;
 }
