@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include "rituel.h"
 
-#define PROGRAM_VERSION "0.2"
+#define PROGRAM_VERSION "0.2.1"
 
 void afficherRituels();
 
@@ -19,6 +19,7 @@ void usage()
 
 	puts("Types de rituel : ");
 	afficherRituels();
+	printf("\n");
 }
 
 void afficherRituels()
@@ -83,10 +84,12 @@ int main(int argc, char *argv[])
 	char type = '0'; // indéfini
 	bool flagPassLetal = false;
 
+	printf("nb arg : %d\n",argc);
 	// parse arguments
-	for (int argn=1 ; argn < argc && (argp = argv[argn])[0] == '-'; ++argn)
+	for (int argn=1 ; argn < argc; ++argn)
 	{
 		// help
+		argp = argv[argn];
 		if (strcmp(argp,"-h") == 0 || strcmp(argp,"--help") == 0)
 		{
 			usage();
@@ -102,6 +105,7 @@ int main(int argc, char *argv[])
 		if (strcmp(argp,"-l") == 0)
 		{
 			flagPassLetal = true;
+			if (argn+1 >= argc) continue;
 			if (strcmp(argv[argn+1],"false") == 0)
 				letal = false;
 			else
@@ -113,9 +117,14 @@ int main(int argc, char *argv[])
 		// type de rituel
 		if (strcmp(argp,"-t") == 0)
 		{
+			if (argn+1 >= argc) { usage(); return -1; }
 			if (argv[argn+1][0] >= '1' && argv[argn+1][0] <= '6')
 			{
 				type = argv[argn+1][0];
+			}
+			else{
+				usage();
+				return -1;
 			}
 			++argn;
 			continue;
