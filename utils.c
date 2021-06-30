@@ -13,24 +13,37 @@ char* mallocAndCpy(char* str)
 	char* toReturn;
 	if (str == NULL)
 	{
-		toReturn = malloc(30);
-		strcpy(toReturn,"mallocAndCpy(): error\n");
+		toReturn = strdup("mallocAndCpy(): error\n");
 	}
 	else
 	{
-		toReturn = malloc(strlen(str)+1);
-		strcpy(toReturn,str);
+		toReturn = strdup(str);
 	}
+	if (toReturn == NULL)
+		errorMalloc();
 	return toReturn;
 }
 
 int isMasculin(char* text)
 {
-	if (*text == 'u')
-		if (*++text == 'n')
+	if (*text == 'u'){
+		if (*++text == 'n'){
 			if (*++text == 'e')
 				return 0; // false, c'est féminin
-	return 1;
+			else
+				return 1; // vrai, c'est masculin
+		}
+	}
+	return -1; // indéterminé
+}
+
+inline int isPluriel(char* text)
+{
+	if (*text == 'd')
+		if (*++text == 'e')
+			if (*++text == 's')
+				return 1; // vrai, c'est pluriel
+	return 0; // faux, c'est singulier
 }
 
 inline int isVoyelle(char c)
@@ -51,14 +64,27 @@ inline int isDebutParVoyelle(char* text)
 
 char* indefiniVersDefiniArticle(char* text)
 {
-	char* truc = malloc(strlen(text)+4);
-	if (isMasculin(text)){
+	char* truc = malloc(strlen(text)+5);
+	if (truc == NULL) errorMalloc();
+
+	if (isPluriel(text))
+	{
+		strcpy(truc,"les ");
+		strcat(truc,text+4);
+		return truc;
+	}
+
+	int ret = isMasculin(text);
+	if (ret == 1){
 		isDebutParVoyelle(text) ? strcpy(truc,"l'") : strcpy(truc,"le ");
 		strcat(truc,text+3);
 	}
-	else {
+	else if (ret == 0) {
 		isDebutParVoyelle(text) ? strcpy(truc,"l'") : strcpy(truc,"la ");
 		strcat(truc,text+4);
+	}
+	else{ // ret == -1
+		strcpy(truc,text);
 	}
 	return truc;
 }

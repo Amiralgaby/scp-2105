@@ -6,8 +6,8 @@
 #include "utils.h"
 
 #define NB_NAMES 3
-#define NB_OBJ_IMP 9
-#define NB_OBJ 17
+#define NB_OBJ_IMP 10
+#define NB_OBJ 21
 
 /* private function prototype */
 void createNomDeRituel(char** name);
@@ -87,7 +87,7 @@ void createNomDeRituel(char** name)
 List createObjetValeurImportant(List l)
 {
 	static const char* tabObjetImp[NB_OBJ_IMP] = {
-		"un Ordinateur",
+		"un ordinateur",
 		"un rubick's cube",
 		"un téléphone",
 		"un portefeuille",
@@ -95,7 +95,8 @@ List createObjetValeurImportant(List l)
 		"un stylo bleu",
 		"un stylo vert",
 		"un produit commercial pour adolescent",
-		"un lit"
+		"un lit",
+		"La première prémolaire du Sujet"
 	};
 	const char* choosen = tabObjetImp[ rand()%NB_OBJ_IMP ];
 	
@@ -110,7 +111,7 @@ List createObjetValeurImportant(List l)
 List createObjets(List l)
 {
 	static char* tabObjet[NB_OBJ] = {
-		"un stylo bleu", // 1
+		"des stylos bleus", // 1
 		"un stylo vert",
 		"un stylo rouge",
 		"une trousse",
@@ -126,7 +127,11 @@ List createObjets(List l)
 		"une housse de couette",
 		"une poignée de porte", // 15
 		"un cadre de photo",
-		"une chaise"
+		"une chaise",
+		"une pincée de poussière",
+		"30 ml de sang du Sujet",
+		"une feuille", // 20
+		"des ciseaux"
 	};
 	
 	char** val = malloc(sizeof(char*));
