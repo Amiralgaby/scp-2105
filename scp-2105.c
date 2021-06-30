@@ -2,9 +2,9 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include "rituel.h"
 
-#define PROGRAM_VERSION "0.1"
-#define DEBUG
+#define PROGRAM_VERSION "0.2"
 
 void afficherRituels();
 
@@ -30,6 +30,18 @@ printf("\
 4 Auto Amélioration\n\n\
 5 Projection\n\n\
 6 Service");
+}
+
+static void printObjet(char* nameObj)
+{
+	static int cmp = 0;
+	printf("%d %s\n", ++cmp, nameObj);
+}
+
+static void printInstruction(char* nameInst)
+{
+	static int cmp = 0;
+	printf("%d %s\n", ++cmp, nameInst);
 }
 
 void interagirObtentionType(char* type)
@@ -123,5 +135,17 @@ int main(int argc, char *argv[])
 	printf("letal %d, type %c\n", letal, type);
 #endif
 
+	Rituel rituel;
+	createRituel(&rituel,letal,type);
+
+	printf("Nom : %s\n\n",getName(&rituel));
+
+	puts("Objets Requis\n");
+	afficherObjets(&rituel,printObjet);
+	
+	puts("\nInstructions du Rituel\n");
+	afficherInstructions(&rituel,printInstruction);
+
+	freeRituel(&rituel);
 	return 0;
 }

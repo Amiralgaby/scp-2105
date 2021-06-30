@@ -32,13 +32,7 @@ void afficherInstructions(Rituel* r, void (*pf)(char* nameInst))
 }
 
 /* Fin des Getters et printers avec template */
-/*
-inline void errorMalloc(void)
-{
-	printf("malloc(): error\n");
-	exit(-1);
-}
-*/
+
 /* public function */
 void createRituel(Rituel* r, bool letal, char type)
 {

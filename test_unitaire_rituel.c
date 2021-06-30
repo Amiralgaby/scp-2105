@@ -3,8 +3,6 @@
 #include <time.h>
 #include "rituel.h"
 
-#define NB_NAMES 3
-
 static void printObjet(char* nameObj)
 {
 	static int cmp = 0;
