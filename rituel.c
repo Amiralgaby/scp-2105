@@ -93,13 +93,7 @@ List createObjetValeurImportant(List l)
 		"la première prémolaire du Sujet"
 	};
 	const char* choosen = tabObjetImp[ rand()%NB_OBJ_IMP ];
-	
-	char* val = malloc(strlen(choosen)+1);
-	if (val == NULL)
-		errorMalloc();
-
-	strcpy(val,choosen);
-	return insertion(l,val);
+	return insertion(l,choosen);
 }
 
 List createObjets(List l)
@@ -127,10 +121,6 @@ List createObjets(List l)
 		"une feuille", // 20
 		"des ciseaux"
 	};
-	
-	char** val = malloc(sizeof(char*));
-	if (val == NULL)
-		errorMalloc();
 
 	for (int r = (rand()&1) + 4, i = 1; i <= r; ++i)
 	{
@@ -140,14 +130,8 @@ List createObjets(List l)
 			--i;
 			continue;
 		}
-		*val = malloc(strlen(choosen)+1);
-		if (*val == NULL)
-			errorMalloc();
-
-		strcpy(*val,choosen);
-		l = insertion(l,*val);
+		l = insertion(l,choosen);
 	}
-	free(val);
 	return l;
 }
 
@@ -211,10 +195,10 @@ List createInstructions(List l)
 	List context, instructions = listNouv();
 
 	context = listNouv();
-	context = insertion(context,mallocAndCpy("un sol"));
-	context = insertion(context,mallocAndCpy("une étagère"));
-	context = insertion(context,mallocAndCpy("un bureau"));
-	context = insertion(context,mallocAndCpy("une poubelle"));
+	context = insertion(context,"un sol");
+	context = insertion(context,"une étagère");
+	context = insertion(context,"un bureau");
+	context = insertion(context,"une poubelle");
 
 	int l1 = longueur(l), l2 = longueur(context);
 

@@ -14,7 +14,7 @@ int vide(List l){ return l == NULL; }
 
 List listNouv(void){ return NULL; }
 
-List insererEnTete(List p, char* x)
+List insererEnTete(List p,const char* x)
 {
 	Maillon *m;
 	m = (Maillon*)malloc(sizeof(Maillon));
@@ -23,12 +23,18 @@ List insererEnTete(List p, char* x)
 		printf("Problème d'allocation\n");
 		exit(1);
 	}
-	m->phrase = x;
+	char* string = strdup(x);
+	if (string == NULL)
+	{
+		printf("Problème d'allocation\n");
+		exit(1);
+	}
+	m->phrase = string;
 	m->suiv = p;
 	return m;
 }
 
-List insertion(List l, char* x)
+List insertion(List l,const char* x)
 {
 	if (vide(l))
 		return insererEnTete(l,x);
@@ -60,7 +66,7 @@ void afficherList(List p)
 	}
 }
 
-int existe(List l, char* v)
+int existe(List l,const char* v)
 {
 	while (!vide(l))
 	{
