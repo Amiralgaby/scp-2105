@@ -21,22 +21,6 @@ inline void errorMalloc(void)
 	exit(-1);
 }
 
-char* mallocAndCpy(char* str)
-{
-	char* toReturn;
-	if (str == NULL)
-	{
-		toReturn = strdup("mallocAndCpy(): error\n");
-	}
-	else
-	{
-		toReturn = strdup(str);
-	}
-	if (toReturn == NULL)
-		errorMalloc();
-	return toReturn;
-}
-
 int isMasculin(char* text)
 {
 	if (*text == 'u'){

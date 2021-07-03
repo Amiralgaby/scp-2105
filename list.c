@@ -41,21 +41,6 @@ List insertion(List l,const char* x)
 	l->suiv = insertion(l->suiv,x);
 	return l;
 }
-/*
-List supprimerEnTete(List p)
-{
-	Maillon *m;
-	if (p == NULL)
-	{
-		printf("List Vide\n");
-		return p;
-	}
-	m = p; 
-	p = p->suiv;
-	free(m);
-	return p;
-}
-*/
 
 void afficherList(List p)
 {
