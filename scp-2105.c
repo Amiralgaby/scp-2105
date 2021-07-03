@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-#include <ctype.h>
+#include <unistd.h>
 #include "rituel.h"
 
 #define PROGRAM_VERSION "0.2.2"
@@ -140,6 +140,7 @@ int main(int argc, char *argv[])
 
 	Rituel rituel;
 	createRituel(&rituel,letal,type);
+	printf("Rituel créé. Veuillez suivre les instructions :\n\n");
 
 	printf("Nom : %s\n\n",getName(&rituel));
 

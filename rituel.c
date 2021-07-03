@@ -5,9 +5,9 @@
 #include "rituel.h"
 #include "utils.h"
 
-#define NB_NAMES 3
-#define NB_OBJ_IMP 10
-#define NB_OBJ 21
+#define NB_NAMES 14
+#define NB_OBJ_IMP 12
+#define NB_OBJ 33
 
 /* private function prototype */
 void createNomDeRituel(char** name);
@@ -68,7 +68,18 @@ void createNomDeRituel(char** name)
 	static const char* tabNames[NB_NAMES] = {
 		"Ira constans purus",
 		"Fragmentis colligeris",
-		"Detritus"
+		"Detritus",
+		"dolor sit amet",
+		"Artemona Sandilius", // 5
+		"Gripus Natalis",
+		"Stasimus Caerellius",
+		"Gulielmus Ulfila",
+		"Cappadox Senilis",
+		"Tycho Gluvias", // 10
+		"Alcesimus Caerellius",
+		"Bromia Tertius",
+		"Saturio Arcadius",
+		"Modestus Pullus" // 14
 	};
 	const char* choosen = tabNames[ rand()%NB_NAMES ];
 	
@@ -85,12 +96,14 @@ List createObjetValeurImportant(List l)
 		"un rubick's cube",
 		"un téléphone",
 		"un portefeuille",
-		"un stylo rouge",
+		"un stylo rouge", // 5
 		"un stylo bleu",
 		"un stylo vert",
 		"un produit commercial pour adolescent",
 		"un lit",
-		"la première prémolaire du Sujet"
+		"la première prémolaire du Sujet", // 10
+		"30 ml de sang du Sujet",
+		"une bande dessinée ayant marqué le sujet" // 12
 	};
 	const char* choosen = tabObjetImp[ rand()%NB_OBJ_IMP ];
 	return insertion(l,choosen);
@@ -117,9 +130,21 @@ List createObjets(List l)
 		"un cadre de photo",
 		"une chaise",
 		"une pincée de poussière",
-		"30 ml de sang du Sujet",
-		"une feuille", // 20
-		"des ciseaux"
+		"une feuille", 
+		"des ciseaux", // 20
+		"une brosse à dent",
+		"une table",
+		"une télécommande",
+		"un ceintre",
+		"un ventilateur", // 25
+		"une horloge",
+		"des écouteurs",
+		"une casserole",
+		"un pichet d'eau",
+		"un bout de pain", // 30
+		"un bol de bonbons",
+		"une statue miniature",
+		"un tableau" // 33
 	};
 
 	for (int r = (rand()&1) + 4, i = 1; i <= r; ++i)
@@ -152,7 +177,7 @@ char* randomiseObjetOrContext(List objets, List context,const int objetsLong, co
 	return choosen;
 }
 
-enum{SUR,SOUS,A_COTE,PLACE_SUR,PLACE_SOUS,PLACE_A_L_ENVERS}Action;
+enum{SUR,SOUS,A_COTE,PLACE_SUR,PLACE_SOUS,JETER,AGITER,ATTENDRE,PLACE_A_L_ENVERS}Action;
 
 char* createInstruction(char* obj1, char* obj2)
 {
@@ -166,23 +191,32 @@ char* createInstruction(char* obj1, char* obj2)
 	switch(rand()%(PLACE_A_L_ENVERS+1))
 	{
 		case SUR:
-			sprintf(buffer,"mettre %s sur %s", obj1, obj2);
+			sprintf(buffer,"mettez %s sur %s", obj1, obj2);
 			break;
 		case SOUS:
-			sprintf(buffer,"mettre %s sous %s", obj1, obj2);
+			sprintf(buffer,"mettez %s sous %s", obj1, obj2);
 			break;
 		case A_COTE:
-			sprintf(buffer,"mettre %s à côté ", obj1); // faut changer :( "de la" ou "du"
+			sprintf(buffer,"mettez %s à côté ", obj1); // faut changer :( "de la" ou "du"
 			contractAndAddArticle(&buffer,obj2);
 			break;
 		case PLACE_SUR:
-			sprintf(buffer,"placer %s sur %s", obj1, obj2);
+			sprintf(buffer,"placez %s sur %s", obj1, obj2);
 			break;
 		case PLACE_SOUS:
-			sprintf(buffer,"placer %s sous %s", obj1, obj2);
+			sprintf(buffer,"placez %s sous %s", obj1, obj2);
 			break;
 		case PLACE_A_L_ENVERS:
-			sprintf(buffer,"placer %s à l'envers", obj1);
+			sprintf(buffer,"placez %s à l'envers", obj1);
+			break;
+		case AGITER:
+			sprintf(buffer,"agitez %s durant %d secondes", obj1, rand()%16+4);
+			break;
+		case JETER:
+			sprintf(buffer,"jetez %s au sol", obj1);
+			break;
+		case ATTENDRE:
+			sprintf(buffer,"attendez %d secondes", rand()%16+4);
 			break;
 		default:
 			strcpy(buffer,"switch(action): error");
