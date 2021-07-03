@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include "rituel.h"
 
-#define PROGRAM_VERSION "0.2.1"
+#define PROGRAM_VERSION "0.2.2"
 
 void afficherRituels();
 
@@ -47,17 +47,13 @@ static void printInstruction(char* nameInst)
 
 void interagirObtentionType(char* type)
 {
-	char c;
 	puts("Choisir types :");
 	afficherRituels();
 	printf("\n\r\nType de rituel : ");
 	do
 	{
-		if (scanf("%c%*c", &c) == 0) printf("Une erreur est survenue\n");
-		if (c >= '1' && c <= '6') break;
-	}while(true);
-
-	*type = c;
+		if ((*type = getchar()) == 0) printf("Une erreur est survenue\n");
+	}while(*type < '1' || *type > '6');
 }
 
 void interagirObtentionLetalite(bool* letal)
@@ -67,9 +63,8 @@ void interagirObtentionLetalite(bool* letal)
 	printf("Letalité  (o/n) : ");
 	do
 	{
-		if (scanf("%c%*c",&c) == 0) printf("Une erreur est survenue\n");
-		if (c == 'o' || c == 'n') break;
-	}while (true); // LOL the while repeated even if c is 'o' or 'n'
+		if ((c = getchar()) == 0) printf("Une erreur est survenue\n");
+	}while (c != 'o' && c != 'n');
 
 	if (c == 'o')
 		*letal = true;
@@ -84,7 +79,6 @@ int main(int argc, char *argv[])
 	char type = '0'; // indéfini
 	bool flagPassLetal = false;
 
-	printf("nb arg : %d\n",argc);
 	// parse arguments
 	for (int argn=1 ; argn < argc; ++argn)
 	{
