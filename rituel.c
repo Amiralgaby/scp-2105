@@ -5,10 +5,6 @@
 #include "rituel.h"
 #include "utils.h"
 
-#define NB_NAMES 14
-#define NB_OBJ_IMP 12
-#define NB_OBJ 33
-
 /* private function prototype */
 void createNomDeRituel(char** name);
 List createObjetValeurImportant(List l);
@@ -65,7 +61,7 @@ void freeRituel(Rituel* r)
 /* private function */
 void createNomDeRituel(char** name)
 {
-	static const char* tabNames[NB_NAMES] = {
+	static const char* tabNames[] = {
 		"Ira constans purus",
 		"Fragmentis colligeris",
 		"Detritus",
@@ -81,7 +77,10 @@ void createNomDeRituel(char** name)
 		"Saturio Arcadius",
 		"Modestus Pullus" // 14
 	};
-	const char* choosen = tabNames[ rand()%NB_NAMES ];
+
+	const size_t tabLen = sizeof(tabNames) / sizeof(tabNames[0]);
+
+	const char* choosen = tabNames[ rand()%tabLen ];
 	
 	*name = malloc(strlen(choosen)+1);
 	if (*name == NULL)
@@ -91,7 +90,7 @@ void createNomDeRituel(char** name)
 
 List createObjetValeurImportant(List l)
 {
-	static const char* tabObjetImp[NB_OBJ_IMP] = {
+	static const char* tabObjetImp[] = {
 		"un ordinateur",
 		"un rubick's cube",
 		"un téléphone",
@@ -105,13 +104,16 @@ List createObjetValeurImportant(List l)
 		"30 ml de sang du Sujet",
 		"une bande dessinée ayant marqué le sujet" // 12
 	};
-	const char* choosen = tabObjetImp[ rand()%NB_OBJ_IMP ];
+
+	const size_t tabLen = sizeof(tabObjetImp) / sizeof(tabObjetImp[0]);
+
+	const char* choosen = tabObjetImp[ rand()%tabLen ];
 	return insertion(l,choosen);
 }
 
 List createObjets(List l)
 {
-	static char* tabObjet[NB_OBJ] = {
+	static char* tabObjet[] = {
 		"des stylos bleus", // 1
 		"un stylo vert",
 		"un stylo rouge",
@@ -147,9 +149,11 @@ List createObjets(List l)
 		"un tableau" // 33
 	};
 
+	const size_t tabLen = sizeof(tabObjet) / sizeof(tabObjet[0]);
+
 	for (int r = (rand()&1) + 4, i = 1; i <= r; ++i)
 	{
-		char* choosen = tabObjet[ rand()%NB_OBJ ];
+		char* choosen = tabObjet[ rand()%tabLen ];
 		if (existe(l,choosen))
 		{
 			--i;
