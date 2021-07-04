@@ -89,15 +89,13 @@ int longueur(List l)
 
 char* atIndexList(List l,const int index)
 {
-	Maillon* m;
-	m = l;
 	for (int i = 1; i < index; ++i)
 	{
 		if (vide(l))
 			break;
-		m = l->suiv;
+		l = l->suiv;
 	}
-	return tete(m);
+	return tete(l);
 }
 
 void afficherElements(List l, void (*pf)(char* val))

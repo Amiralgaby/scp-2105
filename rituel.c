@@ -169,11 +169,18 @@ char* randomiseObjetOrContext(List objets, List context,const int objetsLong, co
 	int r = rand()%(objetsLong+contextLong);
 	char* choosen;
 
-	if (r <= objetsLong){
-		choosen = atIndexList(objets,r);
+	if (strcmp(objFirst,"") == 0)
+	{
+		choosen = atIndexList(objets,r%objetsLong+1);
 	}
-	else{
-		choosen = atIndexList(context,r-objetsLong);
+	else
+	{
+		if (r < objetsLong){
+			choosen = atIndexList(objets,r+1);
+		}
+		else{
+			choosen = atIndexList(context,r-objetsLong+1);
+		}
 	}
 
 	// techniquement, si les listes sont petites (0,1) c'est une boucle infinie :(
