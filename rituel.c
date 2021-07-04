@@ -164,7 +164,7 @@ List createObjets(List l)
 	return l;
 }
 
-char* randomiseObjetOrContext(List context,const int objetsLong, const int contextLong, char* objFirst)
+char* randomiseObjetOrContext(List context,const int objetsLong, const int contextLong, char* objFirst, List used)
 {
 	int r = rand()%contextLong;
 	char* choosen;
@@ -179,7 +179,7 @@ char* randomiseObjetOrContext(List context,const int objetsLong, const int conte
 	}
 
 	// techniquement, si les listes sont petites (0,1) c'est une boucle infinie :(
-	if (strcmp(choosen,objFirst) == 0) return randomiseObjetOrContext(context,objetsLong,contextLong,objFirst);
+	if (existe(used,choosen) || strcmp(choosen,objFirst) == 0) return randomiseObjetOrContext(context,objetsLong,contextLong,objFirst,used);
 	return choosen;
 }
 
@@ -239,9 +239,20 @@ char* createInstruction(char* obj1, char* obj2)
 	return buffer;
 }
 
+int addInListIfDoesntExist(List used, char* obj)
+{
+	static int nbUsed = 1;
+	if (existe(used,obj))
+	{
+		used = insertion(used,obj);
+		++nbUsed;
+	}
+	return nbUsed;
+}
+
 List createInstructions(List l)
 {
-	List context, instructions = listNouv();
+	List context, instructions = listNouv(), used = listNouv();
 
 	context = l;
 	context = insertion(context,"un sol");
@@ -253,11 +264,13 @@ List createInstructions(List l)
 
 	for (int x = 0, r = (rand()&3)+4; x < r; ++x)
 	{
-		char* objetUn = randomiseObjetOrContext(context,l1,l2,"");
-		char* objetDeux = randomiseObjetOrContext(context,l1,l2,objetUn);
+		char* objetUn = randomiseObjetOrContext(context,l1,l2,"",used);
+		char* objetDeux = randomiseObjetOrContext(context,l1,l2,objetUn,used);
 
 		char* inst = createInstruction(objetUn,objetDeux);
 		instructions = insertion(instructions,inst);
+
+		if (addInListIfDoesntExist(used,objetUn) > l1) break;
 	}
 
 	supprimerListeUntil(context,l);
