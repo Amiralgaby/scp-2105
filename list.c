@@ -36,10 +36,7 @@ List insererEnTete(List p,const char* x)
 
 List insertion(List l,const char* x)
 {
-	if (vide(l))
-		return insererEnTete(l,x);
-	l->suiv = insertion(l->suiv,x);
-	return l;
+	return insererEnTete(l,x);
 }
 
 void afficherList(List p)
@@ -64,14 +61,18 @@ int existe(List l,const char* v)
 
 void supprimerListe(List l)
 {
+	supprimerListeUntil(l,NULL);
+}
+
+void supprimerListeUntil(List l,List breakList)
+{
 	Maillon *m;
 	
-	while (!vide(l))
+	while (l != breakList)
 	{
 		m = l;
-		char* alloue = m->phrase;
 		l = l->suiv;
-		free(alloue);
+		free(m->phrase);
 		free(m);
 	}
 }

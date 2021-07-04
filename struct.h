@@ -15,6 +15,7 @@ typedef struct maillon
 
 List listNouv(void);
 void supprimerListe(List l);
+void supprimerListeUntil(List l,List breakList);
 List insertion(List l,const char* v);
 int vide(List l);
 char* tete(List l);

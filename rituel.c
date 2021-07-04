@@ -246,12 +246,12 @@ List createInstructions(List l)
 {
 	List context, instructions = listNouv();
 
-	context = listNouv();
+	context = l;
 	context = insertion(context,"un sol");
-	context = insertion(context,"une étagère");
-	context = insertion(context,"un bureau");
-	context = insertion(context,"une poubelle");
-
+	context = insertion(context,"votre étagère à vêtement");
+	context = insertion(context,"votre bureau");
+	context = insertion(context,"la poubelle de votre chambre");
+	
 	int l1 = longueur(l), l2 = longueur(context);
 
 	for (int x = 0, r = (rand()&3)+4; x < r; ++x)
@@ -263,6 +263,6 @@ List createInstructions(List l)
 		instructions = insertion(instructions,inst);
 	}
 
-	supprimerListe(context);
+	supprimerListeUntil(context,l);
 	return instructions;
 }
