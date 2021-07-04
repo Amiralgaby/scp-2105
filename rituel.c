@@ -164,27 +164,22 @@ List createObjets(List l)
 	return l;
 }
 
-char* randomiseObjetOrContext(List objets, List context,const int objetsLong, const int contextLong, char* objFirst)
+char* randomiseObjetOrContext(List context,const int objetsLong, const int contextLong, char* objFirst)
 {
-	int r = rand()%(objetsLong+contextLong);
+	int r = rand()%contextLong;
 	char* choosen;
 
 	if (strcmp(objFirst,"") == 0)
 	{
-		choosen = atIndexList(objets,r%objetsLong+1);
+		choosen = atIndexList(context,contextLong-objetsLong+r%objetsLong+1);
 	}
 	else
 	{
-		if (r < objetsLong){
-			choosen = atIndexList(objets,r+1);
-		}
-		else{
-			choosen = atIndexList(context,r-objetsLong+1);
-		}
+		choosen = atIndexList(context,r+1);
 	}
 
 	// techniquement, si les listes sont petites (0,1) c'est une boucle infinie :(
-	if (strcmp(choosen,objFirst) == 0) return randomiseObjetOrContext(objets,context,objetsLong,contextLong,objFirst);
+	if (strcmp(choosen,objFirst) == 0) return randomiseObjetOrContext(context,objetsLong,contextLong,objFirst);
 	return choosen;
 }
 
@@ -239,6 +234,8 @@ char* createInstruction(char* obj1, char* obj2)
 		default:
 			strcpy(buffer,"switch(action): error");
 	}
+	free(obj1);
+	free(obj2);
 	return buffer;
 }
 
@@ -256,8 +253,8 @@ List createInstructions(List l)
 
 	for (int x = 0, r = (rand()&3)+4; x < r; ++x)
 	{
-		char* objetUn = randomiseObjetOrContext(l,context,l1,l2,"");
-		char* objetDeux = randomiseObjetOrContext(l,context,l1,l2,objetUn);
+		char* objetUn = randomiseObjetOrContext(context,l1,l2,"");
+		char* objetDeux = randomiseObjetOrContext(context,l1,l2,objetUn);
 
 		char* inst = createInstruction(objetUn,objetDeux);
 		instructions = insertion(instructions,inst);
