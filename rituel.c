@@ -168,16 +168,16 @@ char* randomiseObjetOrContext(List objets, List context,const int objetsLong, co
 {
 	int r = rand()%(objetsLong+contextLong);
 	char* choosen;
+
 	if (r <= objetsLong){
 		choosen = atIndexList(objets,r);
 	}
 	else{
 		choosen = atIndexList(context,r-objetsLong);
 	}
+
 	// techniquement, si les listes sont petites (0,1) c'est une boucle infinie :(
-#if (NB_OBJ>2)
 	if (strcmp(choosen,objFirst) == 0) return randomiseObjetOrContext(objets,context,objetsLong,contextLong,objFirst);
-#endif
 	return choosen;
 }
 
@@ -185,6 +185,13 @@ enum{SUR,SOUS,A_COTE,PLACE_SUR,PLACE_SOUS,JETER,AGITER,ATTENDRE,PLACE_A_L_ENVERS
 
 char* createInstruction(char* obj1, char* obj2)
 {
+	obj1 = indefiniVersDefiniArticle(obj1);
+	if (obj1 == NULL)
+		errorMalloc();
+
+	obj2 = indefiniVersDefiniArticle(obj2);
+	if (obj2 == NULL)
+		errorMalloc();
 	// on considère que obj1 et obj2 sont non nuls :)
 	char* buffer = malloc(90+strlen(obj1)+strlen(obj2)); // franchement c'est bien assez pour les phrases que je fais
 
@@ -245,19 +252,8 @@ List createInstructions(List l)
 		char* objetUn = randomiseObjetOrContext(l,context,l1,l2,"");
 		char* objetDeux = randomiseObjetOrContext(l,context,l1,l2,objetUn);
 
-		char* definiObjetUn = indefiniVersDefiniArticle(objetUn);
-		if (definiObjetUn == NULL)
-			errorMalloc();
-
-		char* definiObjetDeux = indefiniVersDefiniArticle(objetDeux);
-		if (definiObjetDeux == NULL)
-			errorMalloc();
-
-		char* inst = createInstruction(definiObjetUn,definiObjetDeux);
+		char* inst = createInstruction(objetUn,objetDeux);
 		instructions = insertion(instructions,inst);
-
-		free(definiObjetUn);
-		free(definiObjetDeux);
 	}
 
 	supprimerListe(context);
