@@ -1,11 +1,9 @@
+[![CC BY 4.0][cc-by-shield]][cc-by]
 ### SCP-2105
 
 SCP-2105 est un projet permettant d'apprendre le langage C ou d'apprendre un autre langage en réalisant des bindings de ce dernier.
 
 ## Licence
-
-Shield: [![CC BY 4.0][cc-by-shield]][cc-by]
-
 Cette œuvre est soumise à une licence
 [Creative Commons Attribution 4.0 International License][cc-by].
 
